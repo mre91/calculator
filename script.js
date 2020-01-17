@@ -14,41 +14,76 @@ function divide(num1, num2) {
     return num1 / num2;
 }
 
-function operate(operator, num1, num2) {
-    if (operator == '+') {
-        return add(num1, num2);
-    } else if (operator == '-') {
-        return subtract(num1, num2);
-    } else if (operator == '*') {
-        return multiply(num1, num2);
-    } else if (operator == '/') {
-        return divide(num1, num2);
-    } else {
-        return 'unrecognized operator';
+function setCurrentDisplay(currentValue) {
+    document.getElementById('currentDisplay').innerText += currentValue;
+}
+
+function setPreviousDisplay(previousValue) {
+    document.getElementById('previousDisplay').innerText += previousValue;
+}
+
+function clearCurrentDisplay() {
+    document.getElementById('currentDisplay').innerText = '';
+}
+
+function clearPreviousDisplay() {
+    document.getElementById('previousDisplay').innerText = '';
+}
+
+function evaluate(values, operations) {
+    result = values[0];
+    values.shift();
+    while (values.length > 0) {
+        if (operations[0] == '+') {
+            result = add(result, values[0])
+            values.shift();
+            operations.shift();
+        } else if (operations[0] == '-') {
+            result = subtract(result, values[0])
+            values.shift();
+            operations.shift();
+        } else if (operations[0] == 'x') {
+            result = multiply(result, values[0])
+            values.shift();
+            operations.shift();
+        } else if (operations[0] == '/') {
+            result = divide(result, values[0])
+            values.shift();
+            operations.shift();
+        }
     }
 }
 
-function populateDisplay(num) {
-    if (num == 'c') {
-        document.getElementById('display').innerText = '';
-    } else if (num == '=') {
-        
-    } else {
-        document.getElementById('display').innerText += num;
-    }
-}
+let values = [];
+let operations = [];
+let result = 0;
+let numbers = document.querySelectorAll('[data-number]');
+let operators = document.querySelectorAll('[data-operation]');
 
-let numbers = document.getElementsByClassName('number');
-let operators = document.getElementsByClassName('operator');
 for (i=0; i<numbers.length; i++) {
     numbers[i].addEventListener('click', function (event) {
-        let num = this.id;
-        populateDisplay(num);
-      }); 
+        setCurrentDisplay(this.id);
+    }); 
 }
+
 for (i=0; i<operators.length; i++) {
     operators[i].addEventListener('click', function (event) {
-        let oper = this.id;
-        populateDisplay(oper);
-      }); 
+        if (this.id == '=') {
+            values.push(parseFloat(document.getElementById('currentDisplay').innerText))
+            evaluate(values, operations)
+            clearCurrentDisplay();
+            clearPreviousDisplay();
+            setCurrentDisplay(result);
+            result = 0;
+        } else if (this.id == 'c') {
+            clearCurrentDisplay();
+            clearPreviousDisplay();
+        } else {
+            values.push(parseFloat(document.getElementById('currentDisplay').innerText))
+            operations.push(this.id)
+            setPreviousDisplay(document.getElementById('currentDisplay').innerText);
+            setPreviousDisplay(this.id);
+            clearCurrentDisplay();
+        }
+    }); 
 }
