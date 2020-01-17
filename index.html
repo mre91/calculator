@@ -7,31 +7,32 @@
     <meta name="author" content="mre91">
     <meta name="description" content="on-screen calculator">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
-    <link href="style.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
 </head>
 
 <body>
-    <p>I'll be a real calculator, someday...</p>
-    <div id="display"></div>
-    <button class="number" id="7" type="button">7</button>
-    <button class="number" id="8" type="button">8</button>
-    <button class="number" id="9" type="button">9</button>
-    <button class="operator" id="/" type="button">÷</button>
-    <br>
-    <button class="number" id="4" type="button">4</button>
-    <button class="number" id="5" type="button">5</button>
-    <button class="number" id="6" type="button">6</button>
-    <button class="operator" id="x" type="button">x</button>
-    <br>
-    <button class="number" id="1" type="button">1</button>
-    <button class="number" id="2" type="button">2</button>
-    <button class="number" id="3" type="button">3</button>
-    <button class="operator" id="-" type="button">-</button>
-    <br>
-    <button class="number" id="0" type="button">0</button>
-    <button class="operator" id="c" type="button">C</button>
-    <button class="operator" id="=" type="button">=</button>
-    <button class="operator" id="+" type="button">+</button>
+    <div id="container">
+        <div id="display">
+            <div id="previousDisplay"></div>
+            <div id="currentDisplay"></div>
+        </div>
+        <button data-operation class="span-three" id="c" type="button">C</button>
+        <button data-operation class="operation" id="/" type="button">÷</button>
+        <button data-number id="7" type="button">7</button>
+        <button data-number id="8" type="button">8</button>
+        <button data-number id="9" type="button">9</button>
+        <button data-operation class="operation" id="x" type="button">x</button>
+        <button data-number id="4" type="button">4</button>
+        <button data-number id="5" type="button">5</button>
+        <button data-number id="6" type="button">6</button>
+        <button data-operation class="operation" id="-" type="button">-</button>
+        <button data-number id="1" type="button">1</button>
+        <button data-number id="2" type="button">2</button>
+        <button data-number id="3" type="button">3</button>
+        <button data-operation class="operation" id="+" type="button">+</button>
+        <button data-number class="span-three" id="0" type="button">0</button>
+        <button data-operation class="operation" id="=" type="button">=</button>
+    </div>
     <script src="script.js"></script>
 </body>
 
