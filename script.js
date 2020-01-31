@@ -54,12 +54,19 @@ function evaluate(values, operations) {
     }
 }
 
+function backspace() {
+    let newDisplay = document.getElementById('currentDisplay').innerText.toString().slice(0, -1)
+    clearCurrentDisplay()
+    setCurrentDisplay(newDisplay)
+}
+
 let values = []
 let operations = []
 let result = 0
 let newEquation = false
 let numbers = document.querySelectorAll('[data-number]')
 let operators = document.querySelectorAll('[data-operation]')
+let decimalPresent = false
 
 for (i=0; i<numbers.length; i++) {
     numbers[i].addEventListener('click', function (event) {
@@ -67,7 +74,14 @@ for (i=0; i<numbers.length; i++) {
             newEquation = false;
             clearCurrentDisplay()
         }
-        setCurrentDisplay(this.id)
+        if (this.id == '.' && decimalPresent === true) {
+            return
+        } else if (this.id == '.') {
+            setCurrentDisplay(this.id)
+            decimalPresent = true
+        } else {
+            setCurrentDisplay(this.id)
+        }
     }); 
 }
 
@@ -89,9 +103,11 @@ for (i=0; i<operators.length; i++) {
         } else if (this.id == 'c') {
             clearCurrentDisplay()
             clearPreviousDisplay()
+        } else if (this.id == 'del') {
+            backspace()
         } else {
             if (newEquation === true) {
-                newEquation = false;
+                newEquation = false
                 clearCurrentDisplay()
             }
             values.push(parseFloat(document.getElementById('currentDisplay').innerText))
@@ -100,5 +116,6 @@ for (i=0; i<operators.length; i++) {
             setPreviousDisplay(this.id)
             clearCurrentDisplay()
         }
+        decimalPresent = false
     }); 
 }

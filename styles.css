@@ -50,6 +50,6 @@ body {
     font-size: 2.5rem;
 }
 
-.span-three {
-    grid-column: span 3;
+.span-two {
+    grid-column: span 2;
 }
