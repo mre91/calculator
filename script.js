@@ -31,27 +31,38 @@ function clearPreviousDisplay() {
 }
 
 function evaluate(values, operations) {
-    result = values[0]
-    values.shift()
-    while (values.length > 0) {
-        if (operations[0] == '+') {
-            result = add(result, values[0])
-            values.shift()
-            operations.shift()
-        } else if (operations[0] == '-') {
-            result = subtract(result, values[0])
-            values.shift()
-            operations.shift()
-        } else if (operations[0] == 'x') {
-            result = multiply(result, values[0])
-            values.shift()
-            operations.shift()
-        } else if (operations[0] == '/') {
-            result = divide(result, values[0])
-            values.shift()
-            operations.shift()
+    while (operations.length > 0) {
+        for (i=0; i<operations.length; i++) {
+            if (operations[i] == 'x') {
+                values[i] = multiply(values[i], values[i+1])
+                values.splice(i+1, 1)
+                operations.splice(i, 1)
+            }
+        }
+        for (i=0; i<operations.length; i++) {
+            if (operations[i] == '÷') {
+                values[i] = divide(values[i], values[i+1])
+                values.splice(i+1, 1)
+                operations.splice(i, 1)
+            }
+        }
+        for (i=0; i<operations.length; i++) {
+            if (operations[i] == '+') {
+                values[i] = add(values[i], values[i+1])
+                values.splice(i+1, 1)
+                operations.splice(i, 1)
+            }
+        }
+        for (i=0; i<operations.length; i++) {
+            if (operations[i] == '-') {
+                values[i] = subtract(values[i], values[i+1])
+                values.splice(i+1, 1)
+                operations.splice(i, 1)
+            }
         }
     }
+    result = values[0]
+    values.shift()
 }
 
 function backspace() {
@@ -66,6 +77,7 @@ let result = 0
 let newEquation = false
 let numbers = document.querySelectorAll('[data-number]')
 let operators = document.querySelectorAll('[data-operation]')
+let clear = document.querySelector('[data-clear]')
 let decimalPresent = false
 
 for (i=0; i<numbers.length; i++) {
@@ -82,7 +94,7 @@ for (i=0; i<numbers.length; i++) {
         } else {
             setCurrentDisplay(this.id)
         }
-    }); 
+    })
 }
 
 for (i=0; i<operators.length; i++) {
@@ -94,15 +106,12 @@ for (i=0; i<operators.length; i++) {
             clearCurrentDisplay()
             clearPreviousDisplay()
             if (result % 1 != 0) {
-                setCurrentDisplay(Math.round(result * 1000) / 1000);
+                setCurrentDisplay(Math.round(result * 1000000000) / 1000000000);
             } else {
                 setCurrentDisplay(result)
             }
-            result = 0;
-            newEquation = true;
-        } else if (this.id == 'c') {
-            clearCurrentDisplay()
-            clearPreviousDisplay()
+            result = 0
+            newEquation = true
         } else if (this.id == 'del') {
             backspace()
         } else {
@@ -117,5 +126,10 @@ for (i=0; i<operators.length; i++) {
             clearCurrentDisplay()
         }
         decimalPresent = false
-    }); 
+    })
 }
+
+clear.addEventListener('click', () => {
+    clearCurrentDisplay()
+    clearPreviousDisplay()
+})
